@@ -9,6 +9,7 @@ interface Ticket {
   description: string;
   status: 'OPEN' | 'IN_PROGRESS' | 'CLOSED';
   createdAt: string;
+  senderRole?: 'USER' | 'ADMIN';
 }
 
 interface UserChatInterfaceProps {
@@ -72,19 +73,27 @@ export default function UserChatInterface({ tickets, onTicketCreated }: UserChat
           </p>
         </div>
 
-        {tickets.map((ticket) => (
-          <div key={ticket._id} className="flex flex-col items-end animate-in fade-in slide-in-from-bottom-4 duration-300">
-            <div className="max-w-[80%] bg-brand text-white p-4 rounded-2xl rounded-tr-sm shadow-md">
-              <p className="text-sm whitespace-pre-wrap leading-relaxed">{ticket.description}</p>
+        {tickets.map((ticket) => {
+          const isUserMsg = ticket.senderRole === 'USER' || !ticket.senderRole;
+          return (
+            <div key={ticket._id} className={`flex flex-col ${isUserMsg ? 'items-end' : 'items-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}>
+              {!isUserMsg && (
+                <div className="flex items-center mb-1 space-x-2">
+                  <span className="text-xs font-bold text-gray-500">Admin</span>
+                </div>
+              )}
+              <div className={`max-w-[80%] p-4 shadow-sm ${isUserMsg ? 'bg-brand text-white rounded-2xl rounded-tr-sm' : 'bg-white text-gray-800 rounded-2xl rounded-tl-sm border border-gray-100'}`}>
+                <p className="text-sm whitespace-pre-wrap leading-relaxed">{ticket.description}</p>
+              </div>
+              <div className={`flex items-center space-x-2 mt-1 ${isUserMsg ? 'justify-end w-full' : 'justify-start w-full'}`}>
+                <span className="text-[10px] text-gray-400 font-medium">
+                  {new Date(ticket.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </span>
+                {isUserMsg && getStatusBadge(ticket.status)}
+              </div>
             </div>
-            <div className="flex items-center justify-end w-full space-x-2 mt-1">
-              <span className="text-[10px] text-gray-400 font-medium">
-                {new Date(ticket.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
-              {getStatusBadge(ticket.status)}
-            </div>
-          </div>
-        ))}
+          );
+        })}
         <div ref={endOfMessagesRef} />
       </div>
 
