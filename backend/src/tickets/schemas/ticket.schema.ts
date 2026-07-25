@@ -21,6 +21,9 @@ export class Ticket extends Document {
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   userId: Types.ObjectId | User;
+
+  @Prop({ type: String, enum: ['USER', 'ADMIN'], default: 'USER' })
+  senderRole: string;
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);

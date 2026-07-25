@@ -68,9 +68,10 @@ export default function Register() {
           </div>
           <button 
             type="submit" 
-            className="w-full bg-brand text-white font-bold py-3 rounded-lg hover:bg-brand-dark transition-colors shadow-md hover:shadow-lg mt-2"
+            disabled={loading}
+            className="w-full bg-brand text-white font-bold py-3 rounded-lg hover:bg-brand-dark transition-colors shadow-md hover:shadow-lg mt-2 disabled:opacity-50"
           >
-            Sign Up
+            {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
         </form>
         <p className="text-center mt-6 text-gray-500">

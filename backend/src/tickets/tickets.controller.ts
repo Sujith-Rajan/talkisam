@@ -8,12 +8,30 @@ import { Roles } from '../auth/roles.decorator';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('tickets')
 export class TicketsController {
-  constructor(private readonly ticketsService: TicketsService) {}
+  constructor(private readonly ticketsService: TicketsService) { }
 
   @Post()
   @Roles('USER')
   create(@Request() req, @Body() createTicketDto: CreateTicketDto) {
     return this.ticketsService.create(req.user.id, createTicketDto);
+  }
+
+  @Get('stats')
+  @Roles('ADMIN')
+  getStats() {
+    return this.ticketsService.getStats();
+  }
+
+  @Get('admin/user/:userId')
+  @Roles('ADMIN')
+  getUserTickets(@Param('userId') userId: string) {
+    return this.ticketsService.findAllByUser(userId);
+  }
+
+  @Post('admin/reply/:userId')
+  @Roles('ADMIN')
+  adminReply(@Param('userId') userId: string, @Body() createTicketDto: CreateTicketDto) {
+    return this.ticketsService.createAdminReply(userId, createTicketDto);
   }
 
   @Get('archives')

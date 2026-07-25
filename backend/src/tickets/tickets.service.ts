@@ -3,15 +3,44 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { CreateTicketDto, UpdateTicketStatusDto } from './dto/ticket.dto';
 import { Ticket, TicketStatus } from './schemas/ticket.schema';
+import { User } from '../auth/schemas/user.schema';
 
 @Injectable()
 export class TicketsService {
-  constructor(@InjectModel(Ticket.name) private ticketModel: Model<Ticket>) {}
+  constructor(
+    @InjectModel(Ticket.name) private ticketModel: Model<Ticket>,
+    @InjectModel(User.name) private userModel: Model<User>
+  ) { }
+
+  async getStats() {
+    const totalUsers = await this.userModel.countDocuments({ role: 'USER' });
+    const totalTickets = await this.ticketModel.countDocuments();
+    const openTickets = await this.ticketModel.countDocuments({ status: TicketStatus.OPEN });
+    const inProgressTickets = await this.ticketModel.countDocuments({ status: TicketStatus.IN_PROGRESS });
+    const closedTickets = await this.ticketModel.countDocuments({ status: TicketStatus.CLOSED });
+
+    return {
+      totalUsers,
+      totalTickets,
+      openTickets,
+      inProgressTickets,
+      closedTickets
+    };
+  }
 
   async create(userId: string, createTicketDto: CreateTicketDto) {
     return this.ticketModel.create({
       ...createTicketDto,
       userId: new Types.ObjectId(userId),
+      senderRole: 'USER',
+    });
+  }
+
+  async createAdminReply(userId: string, createTicketDto: CreateTicketDto) {
+    return this.ticketModel.create({
+      ...createTicketDto,
+      userId: new Types.ObjectId(userId),
+      senderRole: 'ADMIN',
     });
   }
 
@@ -20,7 +49,7 @@ export class TicketsService {
   }
 
   async findAllByUser(userId: string) {
-    return this.ticketModel.find({ userId, status: { $ne: TicketStatus.CLOSED } });
+    return this.ticketModel.find({ userId: new Types.ObjectId(userId), status: { $ne: TicketStatus.CLOSED } });
   }
 
   async findArchives() {
@@ -28,7 +57,7 @@ export class TicketsService {
   }
 
   async findArchivesByUser(userId: string) {
-    return this.ticketModel.find({ userId, status: TicketStatus.CLOSED });
+    return this.ticketModel.find({ userId: new Types.ObjectId(userId), status: TicketStatus.CLOSED });
   }
 
   async updateStatus(id: string, updateTicketStatusDto: UpdateTicketStatusDto) {

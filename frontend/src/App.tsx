@@ -5,6 +5,10 @@ import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import Archives from './pages/Archives.tsx';
 
+import AdminTicketList from './pages/AdminTicketList.tsx';
+import AdminUserList from './pages/AdminUserList.tsx';
+import AdminChatView from './pages/AdminChatView.tsx';
+
 function App() {
   return (
     <Router>
@@ -20,6 +24,9 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/archives" element={<Archives />} />
+            <Route path="/admin/tickets" element={<AdminTicketList />} />
+            <Route path="/admin/users" element={<AdminUserList />} />
+            <Route path="/admin/chat/:userId" element={<AdminChatView />} />
             <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>
         </main>
