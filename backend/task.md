@@ -1,9 +1,0 @@
-- [x] Plan Approval
-- [x] Implement `UserChatInterface` component
-  - [x] Build Chat Message Feed (read tickets)
-  - [x] Build Message Input Form (create tickets)
-  - [x] Add Status indicators on chat bubbles
-- [x] Update `Dashboard.tsx`
-  - [x] Conditionally render `UserChatInterface` for `USER` role
-  - [x] Keep current Grid dashboard for `ADMIN` role
-- [x] Verify functionality (send message -> ticket appears in admin dashboard)

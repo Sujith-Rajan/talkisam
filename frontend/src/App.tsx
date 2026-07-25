@@ -3,7 +3,6 @@ import { Toaster } from 'react-hot-toast';
 import Login from './pages/Login.tsx';
 import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
-import Archives from './pages/Archives.tsx';
 
 import AdminTicketList from './pages/AdminTicketList.tsx';
 import AdminUserList from './pages/AdminUserList.tsx';
@@ -23,7 +22,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/archives" element={<Archives />} />
             <Route path="/admin/tickets" element={<AdminTicketList />} />
             <Route path="/admin/users" element={<AdminUserList />} />
             <Route path="/admin/chat/:userId" element={<AdminChatView />} />
