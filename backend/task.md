@@ -1,0 +1,18 @@
+- [x] Project Initialization
+  - [x] Initialize Vite React TypeScript project
+  - [x] Install dependencies (`axios`, `react-router-dom`, `lucide-react`)
+  - [x] Install and configure TailwindCSS (v4)
+- [x] Backend Adjustments
+  - [x] Enable CORS in backend for frontend origin
+- [x] App Structure & Styling
+  - [x] Configure Tailwind with "TALKISAM" brand color
+  - [x] Setup API Axios instance with `withCredentials: true`
+  - [x] Setup Routing in `App.tsx`
+- [x] Pages & Components
+  - [x] Login & Register Pages
+  - [x] Dashboard Page (User/Admin View)
+  - [x] Archives Page
+  - [x] Create Ticket Modal/Form
+  - [x] Ticket Card Component
+- [x] Verification
+  - [x] Verify build and functionality
